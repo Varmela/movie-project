@@ -1,8 +1,8 @@
-h1{
+.cinema-title{
   text-align: center;
   color:orange
 }
-p{
+.cinema-description{
   color: white;
   text-align: center;
 }

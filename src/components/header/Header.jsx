@@ -25,7 +25,7 @@ function Header() {
         </div>
         <div className="links">
         
-        <a href="#">Home</a>
+        <Link to="/">Home</Link>
 
           <a href="#">My Favorites</a>
           
