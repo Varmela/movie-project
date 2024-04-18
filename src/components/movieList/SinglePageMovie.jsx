@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import { getSingleMovie } from "../../api";
 import Card from "react-bootstrap/Card";
 import { FaPlay } from "react-icons/fa";
-import Header from "../header/Header";
+//import Header from "../header/Header";
+
 
 const SinglePageMovie = () => {
   const params = useParams();
@@ -16,7 +17,7 @@ const SinglePageMovie = () => {
   
   return (
     <>
-    <Header/>
+
     <div className="details">
       <Card style={{ width: "25rem", border: "0px solid black" }}>
         <Card.Img

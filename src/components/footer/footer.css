@@ -1,0 +1,11 @@
+.footer-part{
+    background-color: #323c4d ;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    border-radius: 2px;
+    height:300px;
+    padding: 130px;
+}
+

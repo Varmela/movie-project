@@ -1,43 +1,32 @@
-import { useQuery } from "@tanstack/react-query";
-import { getAllMovies } from "../api";
-import MovieCard from "../components/movieList/MovieCard";
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import Carousel from "../components/carusel/Carousel";
-function HomePage() {
-  const { data, isPending, isError } = useQuery({
-    queryKey: ["movie-list"],
-    queryFn: getAllMovies,
-  });
 
-  if (isError) {
-    return <p>Something went wrong</p>;
-  }
-  if (isPending) return "Loading...";
+import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MovieList from "../components/movieList/MovieList";
+import { ThemeContext } from "../ThemeContext";
+import Carousel from '../components/carusel/Carousel';
+import CinemaDetails from "../components/cinemaDetails/CinemaDetails";
+import Header from "../components/header/Header";
+import Footer from "../components/footer/Footer";
 
+const HomePage = () => {
+  const nav = useNavigate();
+  const themeFromLocalStorage = localStorage.getItem("theme");
+  const mode = themeFromLocalStorage
+    ? themeFromLocalStorage === "lightMode"
+    : true;
+  const [isLightMode, setIsLightMode] = useState(mode);
   return (
-    <section style={{backgroundColor:' #0d262f'}} className="movie-list">
-    <Carousel/>
-    <Row xs={1} md={4} className="g-4">
-    {data.map((movie,index) => (
-        // <div key={movie.id}>
-        //   <h4>{movie.title}</h4>
-        //   <p>{movie.overview}</p>
-        //   <img src={movie.poster_path} alt={movie.title} />
-        // </div>
+    <ThemeContext.Provider value={{ isLightMode, setIsLightMode }}>
+      <Header />
+      <Carousel/>
+     
+      <MovieList />
+      <Footer/>
       
-     
-    <Col key={index}>
-
-    <MovieCard style={{backgroundColor:' #0d262f'}} movies = {movie}/>
-  
-    </Col>
-
-    ))}
-    </Row>
-     
-    </section>
+      {/*<CinemaDetails/>*/}
+      
+    </ThemeContext.Provider>
   );
-}
+};
 
 export default HomePage;

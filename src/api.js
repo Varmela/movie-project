@@ -13,3 +13,15 @@ export async function getSingleMovie(id){
   
   
   }
+
+  export async function getSearchResults(query){
+    const res = await axios.get(`https://api.themoviedb.org/3/search/movie?api_key=1d1d8844ae1e746c459e7be85c15c840&query=${query}`);
+    return res.data.results
+  }
+
+
+
+ export async function getAllGeners(){
+    const res = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=1d1d8844ae1e746c459e7be85c15c840');
+    return  res.data.geners;
+}
