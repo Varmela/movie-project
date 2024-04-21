@@ -1,4 +1,21 @@
 /* movie.css */
+.cards :hover{
+  cursor: pointer;
+  transform: scale (1.1); 
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between; /* Align cards' content to the start of the flex container */
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between; /* Space elements evenly, with the heart icon pushed to the right */
+  align-items: center; /* Align items vertically */
+}
 .details {
   display: flex;
   justify-content: center;
@@ -41,4 +58,18 @@ button {
 
 button:hover {
   background-color: darkorange;
+}
+
+.category-badge {
+  background-color: transparent; /* Override Bootstrap background color */
+  color: #6c757d; /* Set custom text color */
+  border: 1px solid #6c757d; /* Add border */
+}
+
+.heart{
+  position: absolute;
+  bottom: 10px; 
+  right: 10px; 
+  width: 30px; 
+  height: auto; 
 }

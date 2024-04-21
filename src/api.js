@@ -21,7 +21,12 @@ export async function getSingleMovie(id){
 
 
 
- export async function getAllGeners(){
+ export async function getAllGenres(){
     const res = await axios.get('https://api.themoviedb.org/3/genre/movie/list?api_key=1d1d8844ae1e746c459e7be85c15c840');
-    return  res.data.geners;
+    return  res.data.genres;
+}
+
+export async function getTrailerFromYouTube(id){
+    const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=1d1d8844ae1e746c459e7be85c15c840&append_to_response=videos`);
+    return res.data.videos.results;
 }

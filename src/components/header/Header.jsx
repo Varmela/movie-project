@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import { ThemeContext } from "../../ThemeContext";
 import logo from "./logo2.jpg";
 import { Link, useNavigate } from "react-router-dom";
+import { MdFavorite } from "react-icons/md";
 import "./header.css";
 function Header() {
   const context = useContext(ThemeContext);
@@ -55,7 +56,7 @@ function Header() {
         />
         <Link to="/">Home</Link>
 
-        <a href="#">My Favorites</a>
+        <Link  to="/favorite-movie"><MdFavorite size={'30px'} />My Favorites</Link>
       </div>
     </nav>
   );

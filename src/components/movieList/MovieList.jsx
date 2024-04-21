@@ -5,7 +5,8 @@ import Row from "react-bootstrap/Row";
 import { getAllMovies } from "../../api";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
-import { getAllGeners } from "../../api";
+import { getAllGenres } from "../../api";
+import FavoriteMovie from "../../page/FavoriteMovie";
 function MovieList() {
   const { isLightMode } = useContext(ThemeContext);
   const { data, isPending, isError } = useQuery({
@@ -14,8 +15,8 @@ function MovieList() {
   });
 
   const { data: genresData } = useQuery({
-    queryKey: ['movie-geners'],
-    queryFn: getAllGeners
+    queryKey: ['movie-genres'],
+    queryFn: getAllGenres
   });
 
   if (isError) {
@@ -36,10 +37,11 @@ function MovieList() {
           const categories = getGenresNames(movie.genre_ids, genresData);
           return (
             <Col key={index}>
-              <MovieCard
+              <MovieCard 
                 style={{ backgroundColor: "#0d262f" }}
                 categories={categories}
                 movies={movie}
+                favoirteComponent = {FavoriteMovie}
               />
             </Col>
           );

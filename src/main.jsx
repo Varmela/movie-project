@@ -10,6 +10,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import SinglePageMovie from './components/movieList/SinglePageMovie.jsx';
 import Reservation from './page/Reservation.jsx';
 import SearchMovieAndGeners from './page/SearchMovieAndGeners.jsx';
+import FavoriteMovie from './page/FavoriteMovie.jsx';
 
 const queryClient = new QueryClient();
 const router = createBrowserRouter([
@@ -29,7 +30,12 @@ const router = createBrowserRouter([
   {
     path:'search/:query',
     element:<SearchMovieAndGeners/>
+  },
+  {
+    path:'/favorite-movie',
+    element:<FavoriteMovie/>
   }
+
 ])
 
 

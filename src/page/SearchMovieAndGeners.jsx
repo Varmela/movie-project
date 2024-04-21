@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from "react-router-dom"
-import { getAllGeners, getSearchResults } from '../api';
+import { getAllGenres, getSearchResults } from '../api';
 import MovieCard from '../components/movieList/MovieCard';
 import { getGenresNames } from '../components/movieList/MovieList';
 import Col from "react-bootstrap/Col";
@@ -11,9 +11,9 @@ const SearchMovieAndGeners = () => {
         queryKey:['movie-search'],
         queryFn: ()=>getSearchResults(params.query || '')
     });
-    const {genersData} = useQuery({
-        queryKey: ['movie-gener'],
-        queryFn:getAllGeners
+    const {genresData} = useQuery({
+        queryKey: ['movie-genre'],
+        queryFn:getAllGenres
     });
 
     if(isError){
@@ -27,10 +27,10 @@ const SearchMovieAndGeners = () => {
     <Row xs={1} md={4} className="g-4">
     {
         data?.map((movie,index)=>{
-            const categories = getGenresNames(movie.genere_id,genersData);
+            const categories = getGenresNames(movie.genre_id,genresData);
             return(
                 <Col key={index}>
-             <MovieCard movies = {movie} />
+             <MovieCard movies = {movie} categories = {categories}/>
              </Col>
              );
         })
