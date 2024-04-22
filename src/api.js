@@ -8,7 +8,7 @@ export async function getAllMovies(){
 
 
 export async function getSingleMovie(id){
-    const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=1d1d8844ae1e746c459e7be85c15c840`);
+    const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=1d1d8844ae1e746c459e7be85c15c840&append_to_response=videos`);
     return res.data;
   
   

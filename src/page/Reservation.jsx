@@ -26,6 +26,7 @@ function Reservation() {
   };
   const [formData, setFormData] = useState(initialData);
   function handleChange(e) {
+    
     const { value, name } = e.target;
     setFormData({ ...formData, [name]: value });
   }
@@ -47,7 +48,10 @@ function Reservation() {
             };
             setName("");
             setEmail("");
+            setSeats('');
             setMovie("");
+            setDate('');
+            setTime('');
 
             setFormData(initialData);
             console.log(dataToSend);

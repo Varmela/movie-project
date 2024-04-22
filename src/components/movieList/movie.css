@@ -1,4 +1,4 @@
-/* movie.css */
+
 .cards :hover{
   cursor: pointer;
   transform: scale (1.1); 
@@ -8,28 +8,27 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: space-between; /* Align cards' content to the start of the flex container */
+  justify-content: space-between; 
 }
 
 .card-body {
   display: flex;
-  justify-content: space-between; /* Space elements evenly, with the heart icon pushed to the right */
-  align-items: center; /* Align items vertically */
+  justify-content: space-between; 
+  align-items: center; 
 }
 .details {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-size:100%;
-  background-position: center;
-  padding: 80px; /* Adjust padding as needed */
+  padding: 80px; 
   border: 1px solid black;
-
+  background-size: 100%;
+  min-height: 200vh;
 }
 
 .details-movie {
   margin-left: 20px;
-  color: white; /* Change text color to white for better readability */
+  color: white; 
 }
 
 .movie-title {
@@ -47,23 +46,14 @@
   margin-bottom: 10px;
 }
 
-button {
-  background-color: orange;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  font-size: 16px;
-  cursor: pointer;
-}
 
-button:hover {
-  background-color: darkorange;
-}
+
+
 
 .category-badge {
-  background-color: transparent; /* Override Bootstrap background color */
-  color: #6c757d; /* Set custom text color */
-  border: 1px solid #6c757d; /* Add border */
+  background-color: transparent; 
+  color: #6c757d; 
+  border: 1px solid #6c757d; 
 }
 
 .heart{
@@ -72,4 +62,41 @@ button:hover {
   right: 10px; 
   width: 30px; 
   height: auto; 
+  border: 0px;
+  background-color: transparent;
+  size:30px;
+  
+} 
+
+.video-container {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  text-align: center;
 }
+
+.video {
+  width: 760px; 
+  height: 415px;
+  border: none; 
+}
+
+.video-title {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

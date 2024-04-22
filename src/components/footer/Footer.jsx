@@ -1,8 +1,14 @@
+import { useContext } from 'react';
+import { ThemeContext } from '../../ThemeContext';
 import './footer.css';
 
 const Footer = () => {
+  const {isLightMode} = useContext(ThemeContext);
   return (
-    <div className='footer-part'>
+    <div style={{
+      background: isLightMode ? "white" : "#323c4d",
+      color: isLightMode ? "#323c4d" : "white",
+    }} className='footer-part'>
     <div className='movies'>
     <ul>
     <h4>Movies</h4>

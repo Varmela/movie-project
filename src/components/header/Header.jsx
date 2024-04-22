@@ -9,6 +9,8 @@ import "./header.css";
 function Header() {
   const context = useContext(ThemeContext);
   const nav = useNavigate();
+
+  
   function handleSwitchOnChange(checked) {
     if (checked) {
       localStorage.setItem("theme", "darkMode");
@@ -46,7 +48,7 @@ function Header() {
             aria-label="Search"
             onChange={(event) => setQuery(event.target.value)}
           />
-          <button onClick={handleSearch}>Search</button>
+          <button className="button-search" onClick={handleSearch}>Search</button>
         </form>
       </div>
       <div className="links">
@@ -54,9 +56,15 @@ function Header() {
           defaultChecked={!context.isLightMode}
           onChange={handleSwitchOnChange}
         />
-        <Link to="/">Home</Link>
+        <Link style={{
+          background: context.isLightMode ? "white" : "#323c4d",
+          color: context.isLightMode ? "#323c4d" : "white",
+        }} to="/">Home</Link>
 
-        <Link  to="/favorite-movie"><MdFavorite size={'30px'} />My Favorites</Link>
+        <Link style={{
+          background: context.isLightMode ? "white" : "#323c4d",
+          color: context.isLightMode ? "#323c4d" : "white",
+        }}  to="/favorite-movie"><MdFavorite size={'30px'} />My Favorites</Link>
       </div>
     </nav>
   );

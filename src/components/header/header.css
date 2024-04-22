@@ -23,6 +23,15 @@
     
 }
 a{
-    color:white;
+    
     text-decoration: none;
+}
+
+.button-search{
+    background-color: orange;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
 }
