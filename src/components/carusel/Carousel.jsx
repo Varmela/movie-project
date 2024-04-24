@@ -1,12 +1,8 @@
 import { useContext } from 'react';
 import { ThemeContext } from '../../ThemeContext';
 import './carousel.css';
-import image1 from './foto.png';
-import image2 from './foto4.png';
-import image3 from './foto5.png';
-import image4 from './foto6.png';
 
-function CarouselComponent() {
+function CarouselComponent({mediaType,mediaCategory}) {
   const {isLightMode} = useContext(ThemeContext);
   return (<>
     

@@ -1,10 +1,69 @@
-.footer-part{
+.footer-part {
+    background: #323c4d;
+    color: white;
+    padding: 40px;
+  }
+  
+  .footer-content {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    color: white;
-    border-radius: 2px;
-    height:300px;
-    padding: 130px;
-}
-
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .list {
+    flex: 1;
+    margin-right: 40px;
+  }
+  
+  .list h4 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .cinemaTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #FFD700; 
+  }
+  
+  .description {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .network {
+    
+    text-align: center;
+  }
+  
+  .network h4 {
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+  }
+  
+  .network ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .network ul li {
+    list-style: none;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+  
+  
+  .network ul li svg {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+  
+ 
+  
+  
+ 
+  .network ul li svg:hover {
+    fill: #FFD700; 
+  }

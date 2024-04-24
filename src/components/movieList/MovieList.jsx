@@ -7,7 +7,8 @@ import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
 import { getAllGenres } from "../../api";
 import { FavoriteContext } from "../../App";
-function MovieList({movies}) {
+function MovieList({movies
+}) {
   const { isLightMode } = useContext(ThemeContext);
  const {favoriteMovieIds,setFavoriteMovieIds} = useContext(FavoriteContext);
   const { data, isPending, isError } = useQuery({

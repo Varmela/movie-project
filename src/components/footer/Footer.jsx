@@ -1,42 +1,52 @@
-import { useContext } from 'react';
-import { ThemeContext } from '../../ThemeContext';
-import './footer.css';
+import { useContext } from "react";
+import { ThemeContext } from "../../ThemeContext";
+import { InstagramOutlined ,FacebookOutlined} from '@ant-design/icons';
+import "./footer.css";
 
 const Footer = () => {
-  const {isLightMode} = useContext(ThemeContext);
+  const { isLightMode } = useContext(ThemeContext);
   return (
-    <div style={{
-      background: isLightMode ? "white" : "#323c4d",
-      color: isLightMode ? "#323c4d" : "white",
-    }} className='footer-part'>
-    <div className='movies'>
-    <ul>
-    <h4>Movies</h4>
-    <li>Trending</li>
-    <li>Cooming soon</li>
-    </ul>
+    <div
+      style={{
+        background: isLightMode ? "white" : "#323c4d",
+        color: isLightMode ? "#323c4d" : "white",
+      }}
+      className="footer-part"
+    >
+      <div className="movies">
+        <ul className="list" >
+          <h4>About Us</h4>
+          <h1 className="cinemaTitle">Cinema +</h1>
+          <p className="description">
+            At Cinema +, we believe in the transformative power of cinema. As
+            avid movie enthusiasts, we strive to create an immersive and
+            unforgettable cinematic experience for our audience. From the latest
+            blockbusters to timeless classics, our curated selection offers
+            something for every movie lover. Nestled in the heart of Tirane, our
+            state-of-the-art theaters provide the perfect ambiance for escapism
+            and entertainment. With cutting-edge technology like 3D and 8D, we
+            aim to transport our viewers into captivating worlds, where stories
+            come to life on the big screen. Join us on a journey through the
+            magic of cinema, where every visit promises an adventure worth
+            remembering
+          </p>
+        </ul>
+      </div>
+      
+      <div className="network">
+        <h4>Follow us</h4>
+        <ul  style={{
+          background: isLightMode ? "white" : "#323c4d",
+          color: isLightMode ? "#323c4d" : "white",
+        }} className="list">
+          <li><InstagramOutlined /></li>
+          <li><FacebookOutlined /></li>
+        </ul>
+      </div>
+      <hr style={{color:'white'}}/>
+      <p style={{color:'blue',textAlign:'center'}}>@V2024</p>
     </div>
-    <div className='location'>
-    <h4>Location</h4>
-    <li>Tirane</li>
-    </div>
-    <div className='tech'>
-    <h4>Using tech</h4>
-    <ul>
-    <li> 3D</li>
-    <li> 8D</li>
-    <li> 16D</li>
+  );
+};
 
-    </ul></div>
-    <div className='network'>
-    <h4>Follow us</h4>
-    <ul><li>Instagram</li>
-    <li>Facebook</li>
-    </ul>
-    
-    </div>
-    </div>
-  )
-}
-
-export default Footer
+export default Footer;
