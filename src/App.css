@@ -6,3 +6,51 @@
     padding: 30px;
     
 }
+
+
+/* login style*/
+.form-body {
+    background-image:  url('https://img.lovepik.com/background/20211022/large/lovepik-film-background-board-film-background-image_500877889.jpg') ;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.5);
+    height:740px
+}
+
+.form {
+    text-align: center;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 50%;
+    height:600px;
+    margin: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5); 
+    padding-left: 30px;
+    padding-bottom: 30px;
+}
+
+.login-title {
+    color: white;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+input {
+    border: 2px solid orange;
+    color: blue;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+}
+
+input:focus {
+    outline: none;
+    border-color: dodgerblue;
+}

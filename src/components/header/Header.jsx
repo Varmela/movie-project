@@ -6,6 +6,7 @@ import logo from "./logo2.jpg";
 import { Link, useNavigate } from "react-router-dom";
 import { MdFavorite } from "react-icons/md";
 import "./header.css";
+import { LoginOutlined } from "@ant-design/icons";
 function Header() {
   const context = useContext(ThemeContext);
   const nav = useNavigate();
@@ -60,7 +61,10 @@ function Header() {
           background: context.isLightMode ? "white" : "#323c4d",
           color: context.isLightMode ? "#323c4d" : "white",
         }} to="/">Home</Link>
-
+      <Link style={{
+        background: context.isLightMode ? "white" : "#323c4d",
+        color: context.isLightMode ? "#323c4d" : "white",
+      }} to='/login'><LoginOutlined /></Link>
         <Link style={{
           background: context.isLightMode ? "white" : "#323c4d",
           color: context.isLightMode ? "#323c4d" : "white",

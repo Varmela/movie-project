@@ -10,6 +10,7 @@ import { createContext, useEffect, useState } from "react";
 
 import HomePage from "./page/HomePage";
 import PageNotFound from "./page/PageNotFound";
+import Login from "./page/Login";
 
 export const FavoriteContext = createContext({
   favoriteMovieIds: [],
@@ -62,6 +63,10 @@ function App() {
     {
       path:'/not-found',
       element:<PageNotFound/>
+    },
+    {
+      path:'/login',
+      element: <Login/>
     }
   ]);
   return (
