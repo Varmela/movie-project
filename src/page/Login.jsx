@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-
+import { useNavigate, Link } from "react-router-dom";
+import { useEffect } from "react";
+import { loginData } from "../api";
+import { useMutation } from "@tanstack/react-query";
+import { checkIfTokenIsValid } from "../helper";
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -11,6 +13,28 @@ const schema = z.object({
 
 const Login = () => {
   const nav = useNavigate();
+
+  useEffect(() => {
+    if (checkIfTokenIsValid() === true) {
+      nav("/");
+    }
+  }, [nav]);
+
+  const { mutateAsync, error } = useMutation({
+    mutationFn: loginData,
+    onSuccess: (data) => {
+     
+      console.log(data);
+      localStorage.setItem("token", data.idToken);
+      nav("/");
+      
+    },
+  });
+
+  const onSubmit = async (data) => {
+    await mutateAsync(data);
+  };
+
   const {
     register,
     handleSubmit,
@@ -22,21 +46,9 @@ const Login = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
-    nav("/");
-  };
   return (
     <div className="form-body">
-      <motion.form
-        whileHover={{ scale: 1.2 }}
-        whileTap={{ scale: 1.1 }}
-        drag="x"
-        dragConstraints={{ left: -100, right: 100 }}
-        className="form"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <h1 className="login-title">Login</h1>
         <input
           {...register("email")}
@@ -56,10 +68,11 @@ const Login = () => {
         {errors.password && (
           <div style={{ color: "red" }}>{errors.password.message}</div>
         )}
-        <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Loading.." : "Submit"}
-        </button>
-      </motion.form>
+        <button type="submit">{isSubmitting ? "Loading.." : "Submit"}</button>
+        <p>
+          You don't have an account? <Link to="/register">Signup</Link>
+        </p>
+      </form>
     </div>
   );
 };

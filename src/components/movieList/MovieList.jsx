@@ -7,6 +7,8 @@ import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
 import { getAllGenres } from "../../api";
 import { FavoriteContext } from "../../App";
+import {RingLoader} from 'react-spinners';
+
 function MovieList({movies
 }) {
   const { isLightMode } = useContext(ThemeContext);
@@ -24,7 +26,7 @@ function MovieList({movies
   if (isError) {
     return <p>Something went wrong</p>;
   }
-  if (isPending){ return "Loading..."};
+  if (isPending){ return <RingLoader color="#36d7b7" />};
 
 
   const addToFavorite = (e) => {

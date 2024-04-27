@@ -64,7 +64,10 @@ function Header() {
       <Link style={{
         background: context.isLightMode ? "white" : "#323c4d",
         color: context.isLightMode ? "#323c4d" : "white",
-      }} to='/login'><LoginOutlined /></Link>
+      }} onClick={()=> {
+        localStorage.removeItem('token')
+        nav('/login')
+      }}><LoginOutlined /></Link>
         <Link style={{
           background: context.isLightMode ? "white" : "#323c4d",
           color: context.isLightMode ? "#323c4d" : "white",

@@ -9,6 +9,8 @@ import Row from "react-bootstrap/Row";
 import { getGenresNames } from '../components/movieList/MovieList';
 import Header from "../components/header/Header";
 import { ThemeContext } from '../ThemeContext';
+import { useEffect } from 'react';
+import { checkIfTokenIsValid } from '../helper';
 const FavoriteMovie = () => {
   const {isLightMode} = useContext(ThemeContext)
   const {data,isLoading, isError,isPending} = useQuery({
@@ -26,6 +28,12 @@ const FavoriteMovie = () => {
   const nav = useNavigate();
   const {favoriteMovieIds} = useContext(FavoriteContext);
 
+  const isLoggedIn = localStorage.getItem('token');
+  useEffect(() => {
+    if (checkIfTokenIsValid() === false) {
+      nav("/login");
+    }
+  }, [nav]);
  
   return (
     <>

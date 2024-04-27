@@ -1,105 +1,207 @@
-import { useState } from "react";
-import "./reservation.css";
+import './reservation.css';
+import { Controller, useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { getAllMovies } from '../api';
+import { Link } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import { useEffect,useState } from 'react';
 
-function Reservation() {
-  const dataToSend = {
-    name: "mela",
-    email: "email@gmail.com",
+export const schema = z.object({
+  name: z.string().min(2, { message: "Name has to be at least 2 characters" }),
+  email: z.string().email({ message: "Not a valid email" }),
+  movie: z.string(),
+  date: z.string().transform((value) => new Date(value)),
+  time: z.string().nullable(), //lejon te jete ose e specifikuar ose null
+  theater: z
+    .string()
+    .nullable()
+    .refine((val) => val !== "", {
+      message: "You have to select a theater",
+      path: ["theater"],
+    }),
+  termsAndConditions: z.boolean(),
+});
+
+const Reservation = () => {
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    mode: "all",
+    defaultValues: {
+      name: "",
+      email: "",
+      movie: "",
+      date: "",
+      time: "",
+      theater: "",
+      termsAndConditions: false,
+    },
+    resolver: zodResolver(schema),
+  });
+
+  const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    getAllMovies().then((data) => {
+      setMovies(data);
+    });
+  }, []);
+  const onSubmit = async (data) => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    console.log(data);
   };
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [seats, setSeats] = useState();
-  const [movie, setMovie] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState();
-  const [selectedOptionValue, setSelectedOptionValue] = useState();
-
-  const initialData = {
-    name: "",
-    email: "",
-    seats: "",
-    movie: "",
-    date: "",
-    time: "",
-    selectedOptionValue: undefined,
-  };
-  const [formData, setFormData] = useState(initialData);
-  function handleChange(e) {
-    
-    const { value, name } = e.target;
-    setFormData({ ...formData, [name]: value });
-  }
-  console.log(formData);
   return (
-    <div className="body">
-      <div className="ticket">
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            const dataToSend = {
-              name,
-              email,
-              seats,
-              movie,
-              date,
-              time,
-              selectedOption: selectedOptionValue,
-            };
-            setName("");
-            setEmail("");
-            setSeats('');
-            setMovie("");
-            setDate('');
-            setTime('');
-
-            setFormData(initialData);
-            console.log(dataToSend);
+    <div className="reservation-body">
+    
+      <form className="reservation" onSubmit={handleSubmit(onSubmit)}>
+      <h1 className='reserve-title'>Reservation</h1>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "15px",
+            marginBottom: "15px",
           }}
-          className="ticket-form"
         >
-          <label htmlFor="name">Name:</label>
-          <input
-            onChange={handleChange}
-            id="name"
-            type="text"
-            value={formData.name}
-            placeholder="Name"
-          ></input>
-          <label htmlFor="email">Email:</label>
-          <input
-            onChange={handleChange}
-            value={formData.email}
-            type="email"
-            id="email"
-            placeholder="name@gmail.com"
-          ></input>
-          <label htmlFor="seats">Seat:</label>
-          <input onChange={(event) => {
-            const value = event.target.value;
-            setSeats(parseInt(value));
-            setFormData({ ...formData, seats: value });
-          }} type="number" id="seats" value={seats} placeholder="1-100"></input>
-          <label htmlFor="movie">Movie Title</label>
-          <input type="text" placeholder="movie"></input>
-          <label htmlFor="data">Date:</label>
-          <input type="date" id="data"></input>
-          <label htmlFor="time">Time:</label>
-          <input type="time" id="time"></input>
-          <label>Theater🎦:</label>
-          <select onChange={(e) => {
-            console.log(e.target.value);
-            setSelectedOptionValue(e.target.value);
-          }}>
-            <option>Theater 1</option>
-            <option>Theater 2</option>
-            <option>Theater 3</option>
-          </select>
-          <button type="submit">Send</button>
-        </form>
-      </div>
+          <Controller
+            name="name"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={!!errors.name}
+                label="Name"
+                type="text"
+                variant="outlined"
+                helperText={errors.name?.message}
+              />
+            )}
+          />
+
+          <Controller
+            name="email"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={!!errors.email}
+                label="Email"
+                type="email"
+                variant="outlined"
+                helperText={errors.email?.message}
+              />
+            )}
+          />
+
+          <Controller
+            name="movie"
+            control={control}
+            render={({ field }) => (
+              <FormControl error={!!errors.movie} variant="outlined">
+                <InputLabel id="movie">Movie</InputLabel>
+                <Select {...field} labelId="movie" label="Movie">
+                  {movies.map((movie) => (
+                    <MenuItem key={movie.id} value={movie.title}>
+                      {movie.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {errors.movie && <FormHelperText>{errors.movie.message}</FormHelperText>}
+              </FormControl>
+            )}
+          />
+       
+          <Controller
+            name="date"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={!!errors.date}
+                label="Date"
+                type="date"
+                variant="outlined"
+                helperText={errors.date?.message}
+              />
+            )}
+          />
+
+          <Controller
+            name="time"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={!!errors.time}
+                label="Time"
+                type="time"
+                variant="outlined"
+                helperText={errors.time?.message}
+              />
+            )}
+          />
+          <Controller
+            name="theater"
+            control={control}
+            render={({ field }) => (
+              <FormControl error={!!errors.theater} variant="outlined">
+                <InputLabel id="theater">Theater</InputLabel>
+                <Select {...field} labelId="theater" label="Theater">
+                  <MenuItem value="theater1">Theater 1</MenuItem>
+                  <MenuItem value="theater2">Theater 2</MenuItem>
+                  <MenuItem value="theater3">Theater 3</MenuItem>
+                </Select>
+                {errors.theater && (
+                  <FormHelperText>{errors.theater.message}</FormHelperText>
+                )}
+              </FormControl>
+            )}
+          />
+
+          <Controller
+            name="termsAndConditions"
+            control={control}
+            render={({ field }) => (
+              <FormControl
+                error={!!errors.termsAndConditions}
+                variant="outlined"
+              >
+                <FormControlLabel
+                  {...field}
+                  control={<Checkbox {...field} />}
+                  label="Accept terms and conditions"
+                />
+                {errors.termsAndConditions && (
+                  <FormHelperText>
+                    {errors.termsAndConditions.message}
+                  </FormHelperText>
+                )}
+              </FormControl>
+            )}
+          />
+        </Box>
+
+        <Button variant="contained" disabled={isSubmitting} type="submit">
+          {isSubmitting ? "Loading.." : "Submit"}
+        </Button>
+        <Link style={{color:'red'}} to='/'>Cancel</Link>
+      </form>
     </div>
   );
-}
+};
 
 export default Reservation;

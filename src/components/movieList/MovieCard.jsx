@@ -8,9 +8,12 @@ import { FavoriteContext } from "../../App";
 import { MdOutlineFavoriteBorder, MdOutlineFavorite } from "react-icons/md";
 import { ThemeContext } from "../../ThemeContext";
 
-function MovieCard({ movies, categories,adToFavorite, isFavorite }) {
-  const {isLightMode} = useContext(ThemeContext);
+function MovieCard({ movies, categories }) {
   const nav = useNavigate();
+
+ 
+  const {isLightMode} = useContext(ThemeContext);
+
   function handleGoToSingleMovie() {
     nav(`/movie/${movies.id}`);
   }
@@ -25,6 +28,14 @@ function MovieCard({ movies, categories,adToFavorite, isFavorite }) {
   }
 
   const addToFavorite = (e) => {
+    // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('token');
+
+  if (!isLoggedIn) {
+    // If user is not logged in, redirect to login page
+    nav('/login');
+    return; // Exit the function to prevent further execution
+  }
     if (checkIfMovieIsInLocalStorage()) {
       const updateListOfFavoriteMovie = favoriteMovieIds.filter(
         (movie) => movie.id !== movies.id

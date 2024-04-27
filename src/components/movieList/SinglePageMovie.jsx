@@ -1,14 +1,16 @@
 import "./movie.css";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getSingleMovie, getTrailerFromYouTube, getAllGenres } from "../../api";
 import Card from "react-bootstrap/Card";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
 import { useState, useEffect } from "react";
 import Header from "../header/Header";
+import {RingLoader} from 'react-spinners';
 
 const SinglePageMovie = () => {
+  const nav = useNavigate();
   const { isLightMode } = useContext(ThemeContext);
   const params = useParams();
   const [genres, setGenres] = useState([]);
@@ -53,10 +55,22 @@ const SinglePageMovie = () => {
   }
 
   if (isPending) {
-    return <p>Loading...</p>;
+    return <RingLoader color="#36d7b7" />;
   }
 
   const videos = data?.videos?.results || [];
+
+  const handleReservation = ()=>{
+    // Check if user is logged in
+  const isLoggedIn = localStorage.getItem('token');
+
+  if (!isLoggedIn) {
+    // If user is not logged in, redirect to login page
+    nav('/login');
+    return; // Exit the function to prevent further execution
+  }
+    nav('/reservation');
+  }
 
   return (
     <>
@@ -106,7 +120,9 @@ const SinglePageMovie = () => {
             <p>No videos available</p>
           )}
         </div>
+        <button onClick={handleReservation} style={{marginBottom:'-300px'}} className="reservation-button1">Reserve Movie</button>
       </div>
+      
     </>
   );
 };
