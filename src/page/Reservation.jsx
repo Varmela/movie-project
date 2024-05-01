@@ -26,7 +26,10 @@ const Reservation = () => {
   const { search } = useLocation();   //lejon te futesh ne url
   const queryParams = new URLSearchParams(search); //krijojme nje objekt te ri 
   const movieId = queryParams.get('movieId');  //merr vleren e parametrit dhe i kalon variablit
+  
   const userId = localStorage.getItem('user_id');
+ 
+  
   const { handleSubmit, control, formState: { errors, isSubmitting } } = useForm({
     mode: "all",
     defaultValues: {

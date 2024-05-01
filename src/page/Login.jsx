@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { loginData } from "../api";
 import { useMutation } from "@tanstack/react-query";
 import { checkIfTokenIsValid } from "../helper";
+import { jwtDecode } from "jwt-decode";
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -25,7 +26,10 @@ const Login = () => {
     onSuccess: (data) => {
       console.log(data);
       localStorage.setItem("token", data.idToken);
-      localStorage.setItem("user_id", data.user_id);
+     const token = data.idToken;
+     const decoded = jwtDecode(token);
+     const user_id = decoded.user_id;
+      localStorage.setItem("user_id", user_id);
     nav('/');
       
     },
