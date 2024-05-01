@@ -1,50 +1,40 @@
-import './reservation.css';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getAllMovies } from '../api';
+import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import './reservation.css';
 import { Link } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
-import { useEffect,useState } from 'react';
 
 export const schema = z.object({
+  ticketId: z.string(),
+  user_id: z.string(),
   name: z.string().min(2, { message: "Name has to be at least 2 characters" }),
   email: z.string().email({ message: "Not a valid email" }),
-  movie: z.string(),
+  movie_id: z.string(),
   date: z.string().transform((value) => new Date(value)),
-  time: z.string().nullable(), //lejon te jete ose e specifikuar ose null
-  theater: z
-    .string()
-    .nullable()
-    .refine((val) => val !== "", {
-      message: "You have to select a theater",
-      path: ["theater"],
-    }),
+  time: z.string().nullable(),  //lejon te jete ose e specifikuar ose null
+  theater: z.string().nullable().refine((val) => val !== "", {
+    message: "You have to select a theater",
+    path: ["theater"],
+  }),
   termsAndConditions: z.boolean(),
 });
 
 const Reservation = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors, isSubmitting },
-  } = useForm({
+  const { search } = useLocation();   //lejon te futesh ne url
+  const queryParams = new URLSearchParams(search); //krijojme nje objekt te ri 
+  const movieId = queryParams.get('movieId');  //merr vleren e parametrit dhe i kalon variablit
+  const userId = localStorage.getItem('user_id');
+  const { handleSubmit, control, formState: { errors, isSubmitting } } = useForm({
     mode: "all",
     defaultValues: {
+      ticketId: "", 
+      user_id: userId || '',
       name: "",
       email: "",
-      movie: "",
+      movie_id: movieId || "",
       date: "",
       time: "",
       theater: "",
@@ -53,12 +43,6 @@ const Reservation = () => {
     resolver: zodResolver(schema),
   });
 
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    getAllMovies().then((data) => {
-      setMovies(data);
-    });
-  }, []);
   const onSubmit = async (data) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     console.log(data);
@@ -66,9 +50,8 @@ const Reservation = () => {
 
   return (
     <div className="reservation-body">
-    
       <form className="reservation" onSubmit={handleSubmit(onSubmit)}>
-      <h1 className='reserve-title'>Reservation</h1>
+        <h1 className='reserve-title'>Reservation</h1>
         <Box
           sx={{
             display: "flex",
@@ -77,6 +60,28 @@ const Reservation = () => {
             marginBottom: "15px",
           }}
         >
+
+        <Controller
+            name="ticketId"
+            control={control}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                error={!!errors.ticketId}
+                label="ID"
+                type="text"
+                variant="outlined"
+                helperText={errors.ticketId?.message}
+              />
+            )}
+          />
+          <TextField
+          label="User_ID"
+          value={userId || ''}
+          variant="outlined"
+        
+        />
+
           <Controller
             name="name"
             control={control}
@@ -107,24 +112,13 @@ const Reservation = () => {
             )}
           />
 
-          <Controller
-            name="movie"
-            control={control}
-            render={({ field }) => (
-              <FormControl error={!!errors.movie} variant="outlined">
-                <InputLabel id="movie">Movie</InputLabel>
-                <Select {...field} labelId="movie" label="Movie">
-                  {movies.map((movie) => (
-                    <MenuItem key={movie.id} value={movie.title}>
-                      {movie.title}
-                    </MenuItem>
-                  ))}
-                </Select>
-                {errors.movie && <FormHelperText>{errors.movie.message}</FormHelperText>}
-              </FormControl>
-            )}
+          <TextField
+            label="Movie ID"
+            value={movieId || ''}
+            variant="outlined"
+           
           />
-       
+
           <Controller
             name="date"
             control={control}
@@ -154,6 +148,7 @@ const Reservation = () => {
               />
             )}
           />
+
           <Controller
             name="theater"
             control={control}
@@ -198,7 +193,7 @@ const Reservation = () => {
         <Button variant="contained" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Loading.." : "Submit"}
         </Button>
-        <Link style={{color:'red'}} to='/'>Cancel</Link>
+        <Link style={{ color: 'red' }} to='/'>Cancel</Link>
       </form>
     </div>
   );

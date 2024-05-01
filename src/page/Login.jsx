@@ -23,10 +23,10 @@ const Login = () => {
   const { mutateAsync, error } = useMutation({
     mutationFn: loginData,
     onSuccess: (data) => {
-     
       console.log(data);
       localStorage.setItem("token", data.idToken);
-      nav("/");
+      localStorage.setItem("user_id", data.user_id);
+    nav('/');
       
     },
   });

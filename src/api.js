@@ -26,10 +26,7 @@ export async function getSingleMovie(id){
     return  res.data.genres;
 }
 
-export async function getTrailerFromYouTube(id){
-    const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?api_key=1d1d8844ae1e746c459e7be85c15c840&append_to_response=videos`);
-    return res.data.videos.results;
-}
+
 
 export async function postDataProfile(data){ console.log(data)
   const res = await axios.post(' https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCTSIpXohgcKPlmZ07Ad-LO1Sj-GvFszUQ',data);

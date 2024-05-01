@@ -1,13 +1,14 @@
+// SinglePageMovie.js
 import "./movie.css";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import { getSingleMovie, getTrailerFromYouTube, getAllGenres } from "../../api";
+import { getSingleMovie, getAllGenres } from "../../api";
 import Card from "react-bootstrap/Card";
 import { useContext } from "react";
 import { ThemeContext } from "../../ThemeContext";
 import { useState, useEffect } from "react";
 import Header from "../header/Header";
-import {RingLoader} from 'react-spinners';
+import { RingLoader } from "react-spinners";
 
 const SinglePageMovie = () => {
   const nav = useNavigate();
@@ -15,18 +16,9 @@ const SinglePageMovie = () => {
   const params = useParams();
   const [genres, setGenres] = useState([]);
 
-  const { data, isPending, isError } = useQuery({
+  const { data, isPending, isError, isSuccess } = useQuery({
     queryKey: ["movie-search", params.id],
     queryFn: () => getSingleMovie(parseInt(params.id || "")),
-  });
-
-  const {
-    data: movieTrailer,
-    isSuccess,
-    error,
-  } = useQuery({
-    queryKey: ["movie-trailer", params.id],
-    queryFn: () => getTrailerFromYouTube(parseInt(params.id)),
   });
 
   const { data: allGenresData } = useQuery({
@@ -34,16 +26,6 @@ const SinglePageMovie = () => {
     queryFn: getAllGenres,
   });
 
-  useEffect(() => {
-    if (isSuccess && movieTrailer && movieTrailer.videos) {
-      const foundTrailer = movieTrailer.videos.find(
-        (vid) => vid.name === "Official Trailer"
-      );
-      setTrailer(foundTrailer || movieTrailer.videos[0]);
-    }
-  }, [isSuccess, movieTrailer]);
-  console.log("succes", isSuccess);
-  console.log("Trailer", movieTrailer);
   useEffect(() => {
     if (allGenresData) {
       setGenres(allGenresData);
@@ -60,17 +42,15 @@ const SinglePageMovie = () => {
 
   const videos = data?.videos?.results || [];
 
-  const handleReservation = ()=>{
-    // Check if user is logged in
-  const isLoggedIn = localStorage.getItem('token');
+  const handleReservation = () => {
+    const isLoggedIn = localStorage.getItem("token");
 
-  if (!isLoggedIn) {
-    // If user is not logged in, redirect to login page
-    nav('/login');
-    return; // Exit the function to prevent further execution
-  }
-    nav('/reservation');
-  }
+    if (!isLoggedIn) {
+      nav("/login");
+      return;
+    }
+    nav(`/reservation?movieId=${params.id}`);
+  };
 
   return (
     <>
@@ -104,25 +84,31 @@ const SinglePageMovie = () => {
             Genres: {genres.map((genre) => genre.name).join(", ")}
           </h6>
         </div>
-        <div className='video-container'>
+        <div className="video-container">
           {videos.length > 0 ? (
             <div>
               <div key={videos[0].key}>
-                <iframe className='video'
+                <iframe
+                  className="video"
                   src={`https://www.youtube.com/embed/${videos[0].key}`}
                   title={videos[0].name}
                   allowFullScreen
                 ></iframe>
-                <p className='video-title'>{videos[0].name}</p>
+                <p className="video-title">{videos[0].name}</p>
               </div>
             </div>
           ) : (
             <p>No videos available</p>
           )}
         </div>
-        <button onClick={handleReservation} style={{marginBottom:'-300px'}} className="reservation-button1">Reserve Movie</button>
+        <button
+          onClick={handleReservation}
+          style={{ marginBottom: "-300px" }}
+          className="reservation-button1"
+        >
+          Reserve Movie
+        </button>
       </div>
-      
     </>
   );
 };
