@@ -2,14 +2,13 @@ import React from "react";
 import { Switch } from "antd";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../../ThemeContext";
-import logo from "./logo2.jpg";
+import logo from '../../components/header/logo2.jpg';
 import { Link, useNavigate } from "react-router-dom";
 import { MdFavorite } from "react-icons/md";
-import "./header.css";
 import { LoginOutlined } from "@ant-design/icons";
 import { BsFillTicketPerforatedFill } from "react-icons/bs";
 import { GrUserAdmin } from "react-icons/gr";
-function Header() {
+function NavAdmin() {
   const context = useContext(ThemeContext);
   const nav = useNavigate();
 
@@ -23,12 +22,7 @@ function Header() {
     context.setIsLightMode(!checked);
   }
 
-  //search part
-  const [query, setQuery] = useState("");
-  function handleSearch() {
-    const splitQuery = query.split(" ").join("+").trim();
-    nav("/search/" + splitQuery);
-  }
+
 
   return (
     <nav
@@ -41,18 +35,6 @@ function Header() {
       <div className="title">
         <img className="image" src={logo} />
         <h3>Cinema + </h3>
-      </div>
-      <div style={{ width: "30%" }} className="search">
-        <form className="d-flex">
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          <button className="button-search" onClick={handleSearch}>Search</button>
-        </form>
       </div>
       <div className="links">
         <Switch
@@ -89,4 +71,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default NavAdmin;

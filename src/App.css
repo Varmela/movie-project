@@ -112,3 +112,114 @@ input:focus {
   }
   
 
+  /*ticket css*/
+
+  .ticket-container {
+    padding: 30px;
+  }
+  
+  .ticket {
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    padding: 20px;
+  }
+  
+  .ticket-header {
+    margin-bottom: 15px;
+  }
+  
+  .ticket-title {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .ticket-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .ticket-info {
+    margin-bottom: 10px;
+  }
+  
+  .ticket-icon {
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .ticket-text {
+    font-size: 1rem;
+  }
+  
+  .ticket-button {
+    background-color: #4caf50;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .ticket-button:hover {
+    background-color: #45a049;
+  }
+  
+  .link {
+    text-decoration: none;
+    color: #3f51b5;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+    color: #1a237e;
+  }
+  
+  /*modal style*/
+
+  .custom-modal {
+    max-width: 400px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+
+  /* style for table*/
+  .ticket-table-container {
+    padding: 20px;
+  }
+  
+  .edit-table {
+    margin-top: 20px;
+  }
+  
+  .edit-table th {
+    background-color: #b0bec5; /* Table header background color */
+  }
+  
+  .edit-table td {
+    padding: 10px;
+  }
+  
+  .edit-table .ant-table-tbody > tr:hover > td {
+    background-color: #b0bec5; /* Hover effect */
+  }
+  

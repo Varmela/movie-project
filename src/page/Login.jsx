@@ -31,7 +31,11 @@ const Login = () => {
      const user_id = decoded.user_id;
       localStorage.setItem("user_id", user_id);
     nav('/');
-      
+    if (decoded.isAdmin) {
+      nav('/admin-dashboard'); // Navigate to admin dashboard if the user is an admin
+    } else {
+      nav('/'); // Navigate to user dashboard if the user is not an admin
+    }
     },
   });
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Checkbox, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import './reservation.css';
 import { Link } from 'react-router-dom';
-
+import axios from 'axios';
 export const schema = z.object({
-  ticketId: z.string(),
+  
   user_id: z.string(),
   name: z.string().min(2, { message: "Name has to be at least 2 characters" }),
   email: z.string().email({ message: "Not a valid email" }),
@@ -23,6 +23,8 @@ export const schema = z.object({
 });
 
 const Reservation = () => {
+  const nav = useNavigate();
+ 
   const { search } = useLocation();   //lejon te futesh ne url
   const queryParams = new URLSearchParams(search); //krijojme nje objekt te ri 
   const movieId = queryParams.get('movieId');  //merr vleren e parametrit dhe i kalon variablit
@@ -33,7 +35,7 @@ const Reservation = () => {
   const { handleSubmit, control, formState: { errors, isSubmitting } } = useForm({
     mode: "all",
     defaultValues: {
-      ticketId: "", 
+    
       user_id: userId || '',
       name: "",
       email: "",
@@ -47,8 +49,13 @@ const Reservation = () => {
   });
 
   const onSubmit = async (data) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(data);
+    try {
+      const response = await axios.post('http://localhost:3000/reservations', data);
+      console.log("Reservation successful:", response.data);
+     nav('/ticket');
+    } catch (error) {
+      console.error("Error making reservation:", error);
+    }
   };
 
   return (
@@ -64,24 +71,12 @@ const Reservation = () => {
           }}
         >
 
-        <Controller
-            name="ticketId"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                error={!!errors.ticketId}
-                label="ID"
-                type="text"
-                variant="outlined"
-                helperText={errors.ticketId?.message}
-              />
-            )}
-          />
+       
           <TextField
           label="User_ID"
           value={userId || ''}
           variant="outlined"
+          disabled
         
         />
 
@@ -119,6 +114,7 @@ const Reservation = () => {
             label="Movie ID"
             value={movieId || ''}
             variant="outlined"
+            disabled
            
           />
 
@@ -133,6 +129,7 @@ const Reservation = () => {
                 type="date"
                 variant="outlined"
                 helperText={errors.date?.message}
+                
               />
             )}
           />
@@ -159,9 +156,9 @@ const Reservation = () => {
               <FormControl error={!!errors.theater} variant="outlined">
                 <InputLabel id="theater">Theater</InputLabel>
                 <Select {...field} labelId="theater" label="Theater">
-                  <MenuItem value="theater1">Theater 1</MenuItem>
-                  <MenuItem value="theater2">Theater 2</MenuItem>
-                  <MenuItem value="theater3">Theater 3</MenuItem>
+                  <MenuItem value="Theater-1">Theater 1</MenuItem>
+                  <MenuItem value="Theater-2">Theater 2</MenuItem>
+                  <MenuItem value="Theater-3">Theater 3</MenuItem>
                 </Select>
                 {errors.theater && (
                   <FormHelperText>{errors.theater.message}</FormHelperText>
@@ -195,7 +192,9 @@ const Reservation = () => {
 
         <Button variant="contained" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Loading.." : "Submit"}
+        
         </Button>
+      
         <Link style={{ color: 'red' }} to='/'>Cancel</Link>
       </form>
     </div>

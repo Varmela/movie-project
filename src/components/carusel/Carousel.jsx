@@ -15,7 +15,7 @@ function CarouselComponent() {
 
   useEffect(() => {
     if (data) {
-      setMyData(data); // Update state with fetched data
+      setMyData(data); 
     }
   }, [data]);
 
@@ -40,7 +40,7 @@ function CarouselComponent() {
       <Carousel className="carousel-part">
         {myData.map((movie, index) => (
           <Carousel.Item key={index}>
-            <img style={{height:'800px'}}
+            <img style={{height:'600px'}}
               className="d-block w-100"
               src={"https://image.tmdb.org/t/p/original/" + movie.poster_path}
               alt={movie.title}

@@ -7,12 +7,15 @@ import SearchMovieAndGeners from "./page/SearchMovieAndGeners.jsx";
 import FavoriteMovie from "./page/FavoriteMovie.jsx";
 import { ThemeContext } from "./ThemeContext";
 import { createContext, useEffect, useState } from "react";
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import HomePage from "./page/HomePage";
 import PageNotFound from "./page/PageNotFound";
 import Login from "./page/Login";
 import Signup from "./page/Signup";
-
+import TicketPage from "./page/ticketPage";
+import UnauthorizedPage from "./page/UnauthorizedPage";
+import Screen from "./page/adminDashboard/adminScreen/Screen";
 export const FavoriteContext = createContext({
   favoriteMovieIds: [],
   setFavoriteMovieIds: () =>{},
@@ -37,6 +40,8 @@ function App() {
       JSON.stringify(favoriteMovieIds)
     );
   }, [favoriteMovieIds]);
+
+  const [userId, setUserId] = useState('');
   const router = createBrowserRouter([
     {
       path: "/",
@@ -72,6 +77,18 @@ function App() {
     {
       path:'/register',
       element:<Signup/>
+    },
+    {
+      path:'/ticket',
+      element:<TicketPage userId={userId} />
+    },
+    {
+      path:'/admin-dashboard',
+      element:<Screen/>
+    },
+    {
+      path:'/unauthorized',
+      element:<UnauthorizedPage/>
     }
   ]);
   return (
@@ -80,6 +97,7 @@ function App() {
         <QueryClientProvider client={queryClient}>
         <FavoriteContext.Provider value={{ favoriteMovieIds, setFavoriteMovieIds }}>
           <RouterProvider router={router} />
+          <ToastContainer />
           </FavoriteContext.Provider>
         </QueryClientProvider>
       </ThemeContext.Provider>

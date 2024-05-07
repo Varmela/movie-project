@@ -13,7 +13,7 @@ export function decodeToken() {
   export function checkIfTokenIsValid() {
     if (decodeToken() === null) return false;
   
-    const generatedDate = decodeToken().iat;
+    const generatedDate = decodeToken().exp;
     const now = new Date().getTime();
     const dateTimeStamp = new Date(generatedDate * 1000).getTime();
     const difference = now - dateTimeStamp;

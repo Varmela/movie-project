@@ -1,5 +1,48 @@
 {
-    "reservations": [
-    ]
-   
-  }
+  "reservations": [
+    {
+      "name": "Adel",
+      "email": "adi@gmail.com",
+      "date": "2024-05-25T00:00:00.000Z",
+      "time": "20:00",
+      "theater": "Theater-3",
+      "id": "71a8"
+    },
+    {
+      "name": "Varmela",
+      "date": "2024-03-20T00:00:00.000Z",
+      "time": "11:00",
+      "theater": "Theater-2",
+      "id": "78dd"
+    },
+    {
+      "id": "649b",
+      "user_id": "NVfkW5EaZjMgo1V9O2dR5y0HQWn2",
+      "name": "Ale",
+      "email": "ale@gmail.com",
+      "movie_id": "748783",
+      "date": "2024-12-20T00:00:00.000Z",
+      "time": "20:00",
+      "theater": "Theater-2",
+      "termsAndConditions": true
+    },
+    {
+      "id": "d7ef",
+      "user_id": "NVfkW5EaZjMgo1V9O2dR5y0HQWn2",
+      "name": "Varmela",
+      "email": "varmela.basha@gmail.com",
+      "movie_id": "845111",
+      "date": "2024-05-23T00:00:00.000Z",
+      "time": "20:00",
+      "theater": "Theater-1",
+      "termsAndConditions": true
+    },
+    {
+      "name": "mela",
+      "date": "2024-05-09T00:00:00.000Z",
+      "time": "20:00",
+      "theater": "Theater-2",
+      "id": "0972"
+    }
+  ]
+}
