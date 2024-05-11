@@ -28,38 +28,44 @@ const FavoriteMovie = () => {
   const nav = useNavigate();
   const {favoriteMovieIds} = useContext(FavoriteContext);
 
-  const isLoggedIn = localStorage.getItem('token');
+ // const isLoggedIn = localStorage.getItem('token');
   useEffect(() => {
     if (checkIfTokenIsValid() === false) {
       nav("/login");
     }
   }, [nav]);
- 
+
+   
+  
   return (
     <>
     <Header/>
-
     <div className="favorite-list">
-    <section style={{
-      background: isLightMode ? "white" : "#0d262f",
-      color: isLightMode ? "#0d262f" : "white",
-    }} className='movie-list'>
-      <Row xs={1} md={4} className="g-4">
-        {data?.map((movie, index) => {
-          if (favoriteMovieIds.find((favMovie) => favMovie.id === movie.id)) {
-            const categories = getGenresNames(movie.genre_id, genresData);
-            return (
-              <Col key={index}>
-                <MovieCard movies={movie} categories={categories} />
-              </Col>
-            );
-          }
-          return null;
-        })}
-      </Row>
-    </section>
-  </div>
-    </>
+      <section style={{
+        background: isLightMode ? "white" : "#0d262f",
+        color: isLightMode ? "#0d262f" : "white",
+      }} className='movie-list'>
+        {(!data || data.length === 0) ?
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+              <p style={{ color: 'black', textAlign: 'center' }}>No favorite movies to display.</p>
+            </div> :
+          <Row xs={1} md={4} className="g-4">
+            {data?.map((movie, index) => {
+              if (favoriteMovieIds.find((favMovie) => favMovie.id === movie.id)) {
+                const categories = getGenresNames(movie.genre_id, genresData);
+                return (
+                  <Col key={index}>
+                    <MovieCard movies={movie} categories={categories} />
+                  </Col>
+                );
+              }
+              return null;
+            })}
+          </Row>
+        }
+      </section>
+    </div>
+  </>
    
   )
 }

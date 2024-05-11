@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { postDataProfile } from "../api";
 
+
 const schema = z.object({
   name: z.string(),
   email: z.string().email(),
@@ -33,6 +34,7 @@ const Signup = () => {
       console.log(e);
       alert("Your profile was not created");
     },
+    
   });
 
   const onSubmit = (data) => {

@@ -65,6 +65,7 @@ const SinglePageMovie = () => {
       >
         <Card style={{ width: "25rem", border: "0px solid black" }}>
           <Card.Img
+            className="img-sng-cards"
             variant="top"
             src={"https://image.tmdb.org/t/p/original/" + data?.poster_path}
           />

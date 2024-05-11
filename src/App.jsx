@@ -89,7 +89,8 @@ function App() {
     {
       path:'/unauthorized',
       element:<UnauthorizedPage/>
-    }
+    },
+    
   ]);
   return (
     <>

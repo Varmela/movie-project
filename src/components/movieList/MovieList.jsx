@@ -33,8 +33,10 @@ function MovieList({movies
     if (checkIfMovieIsInLocalStorage()) {
       const updateListOfFavoriteMovie = favoriteMovieIds.filter(
         (movie) => movie.id !== movies.id
+        
       );
       setFavoriteMovieIds(updateListOfFavoriteMovie);
+     
     } else {
       e.stopPropagation();
       setFavoriteMovieIds([

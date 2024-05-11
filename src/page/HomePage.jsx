@@ -8,12 +8,12 @@ const HomePage = () => {
  
 
   return (
-    <>
+    <div style={{margin:'0px',padding:'0px'}} className="site-container">
       <Header />
       <CarouselComponent /> <br />
       <MovieList />
       <Footer />
-    </>
+    </div>
   );
 };
 

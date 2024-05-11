@@ -14,6 +14,12 @@ export async function getSingleMovie(id) {
   return res.data;
 }
 
+export async function getCast() {
+
+    const res = await axios.get(`https://api.themoviedb.org/3/movie/credits?api_key=1d1d8844ae1e746c459e7be85c15c840`);
+    return res.data.cast;
+  } 
+
 export async function getSearchResults(query) {
   const res = await axios.get(
     `https://api.themoviedb.org/3/search/movie?api_key=1d1d8844ae1e746c459e7be85c15c840&query=${query}`
@@ -53,7 +59,10 @@ export async function ticketLoader(userID) {
 //update ticket
 export async function updateTicket({ id, ticketToChange }) {
   const res = await axios.put(`http://localhost:3000/reservations/${id}`, {
+    user_id:ticketToChange.userId,
     name: ticketToChange.name,
+    email:ticketToChange.email,
+    movieTitle:ticketToChange.movieTitle,
     date: ticketToChange.date,
     time: ticketToChange.time,
     theater: ticketToChange.theater,
@@ -72,10 +81,10 @@ export async function updateTicketFromAdmin({ id, ticketChange }) {
   const res = await axios.put(
     `http://localhost:3000/reservations/${id}`,
     {
-      user_id: ticketChange.user_id,
+      user_id: ticketChange.userId,
       name: ticketChange.name,
       email: ticketChange.email,
-      movie_id:ticketChange.movie_id,
+      movieTitle:ticketChange.movieTitle,
       date: ticketChange.date,
       time: ticketChange.time,
       theater: ticketChange.theater,

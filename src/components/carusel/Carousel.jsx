@@ -45,7 +45,7 @@ function CarouselComponent() {
               src={"https://image.tmdb.org/t/p/original/" + movie.poster_path}
               alt={movie.title}
             />
-            <Carousel.Caption style={{backgroundColor:'rgba(255, 255, 255, 0.2)',color:'black',fontSize:'30px'}}>
+            <Carousel.Caption className="carousel-caption" >
               <h1 style={{color:'orange'}}>{movie.title}</h1> 
               <p>{movie.overview.slice(0, 160)}...</p>
             </Carousel.Caption>

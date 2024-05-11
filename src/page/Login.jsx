@@ -7,6 +7,8 @@ import { loginData } from "../api";
 import { useMutation } from "@tanstack/react-query";
 import { checkIfTokenIsValid } from "../helper";
 import { jwtDecode } from "jwt-decode";
+import { ToastContainer, toast } from "react-toastify"; // Import toast components and styles
+import "react-toastify/dist/ReactToastify.css";
 const schema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -31,12 +33,9 @@ const Login = () => {
      const user_id = decoded.user_id;
       localStorage.setItem("user_id", user_id);
     nav('/');
-    if (decoded.isAdmin) {
-      nav('/admin-dashboard'); // Navigate to admin dashboard if the user is an admin
-    } else {
-      nav('/'); // Navigate to user dashboard if the user is not an admin
-    }
+    
     },
+    
   });
 
   const onSubmit = async (data) => {
@@ -49,7 +48,7 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      email: "mela@gmail.com",
+      email: "",
     },
     resolver: zodResolver(schema),
   });

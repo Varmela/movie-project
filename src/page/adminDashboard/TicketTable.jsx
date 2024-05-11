@@ -8,11 +8,28 @@ import { FaRegEdit } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { checkIfTokenIsValid } from "../../helper";
 import { ThemeContext } from "../../ThemeContext";
-function TicketTable() {
 
+function TicketTable() {
   //email: admin@gmail.com -- psw: admin1
+  const adminId = "pDmkvL201nZWWgrEYnIHxyBBBIu1";
+
+  const { isLightMode } = useContext(ThemeContext);
+  const { search } = useLocation(); //lejon te futesh ne url
+  const queryParams = new URLSearchParams(search); //krijojme nje objekt te ri
+  const movieId = queryParams.get("movieId"); //merr vleren e parametrit dhe i kalon variablit
+  const userId = localStorage.getItem("user_id");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
- const adminId = 'pDmkvL201nZWWgrEYnIHxyBBBIu1' ;
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [userIdInput, setUserId] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [movieTitle,setMovieTitle] = useState('');
+  const [date, setDate] = useState("");
+  const [time, setTime] = useState("");
+  const [theater, setTheater] = useState("");
+
+  
 
   const nav = useNavigate();
   useEffect(() => {
@@ -20,12 +37,6 @@ function TicketTable() {
       nav("/login");
     }
   }, [nav]);
-
-  const { isLightMode } = useContext(ThemeContext);
-  const { search } = useLocation();   //lejon te futesh ne url
-  const queryParams = new URLSearchParams(search); //krijojme nje objekt te ri 
-  const movieId = queryParams.get('movieId');  //merr vleren e parametrit dhe i kalon variablit 
-  const userId = localStorage.getItem("user_id");
 
   useEffect(() => {
     if (userId !== adminId) {
@@ -38,50 +49,51 @@ function TicketTable() {
     queryFn: getAllTicket,
   });
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [userIdInput, setUserId] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [movieIdInput, setMovieId] = useState("");
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [theater, setTheater] = useState("");
 
  
-    const updateMutation = useMutation({
-      mutationFn: updateTicketFromAdmin,
-      onSuccess: () => {
-        refetch();
-        toast("Ticket is updated!");
-      },
-      onError: (error) => {
-        toast.error("An error occurred: " + error.message);
-        console.log(error);
+  const updateMutation = useMutation({
+    mutationFn: updateTicketFromAdmin,
+    onSuccess: () => {
+      refetch();
+      toast("Ticket is updated!");
+    },
+    onError: (error) => {
+      toast.error("An error occurred: " + error.message);
+      console.log(error);
+    },
+  });
+
+  const handleOk = () => {
+    updateMutation.mutate({
+      id: selectedTicket.id,
+      ticketChange: {
+        userId,
+        name,
+        email,
+       movieTitle,
+        date,
+        time,
+        theater,
       },
     });
-
-    const handleOk = () => {
-      updateMutation.mutate({
-        id: selectedTicket.id,
-        ticketChange: {
-          userId: selectedTicket.user_id,
-          name,
-          email,
-          movieId: selectedTicket.movie_id,
-          date,
-          time,
-          theater,
-        },
-      });
-      refetch();
-      setIsModalOpen(false);
-    };
- 
+    refetch();
+    setIsModalOpen(false);
+  };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    setUserId(selectedTicket?.user_id);
+    setName(selectedTicket?.name);
+    setEmail(selectedTicket?.email);
+    console.log("selectedTicket?.movie_id:", selectedTicket?.movie_id);
+    setMovieTitle(selectedTicket?.movieTitle);
+    setDate(selectedTicket?.date);
+    setTime(selectedTicket?.time);
+    setTheater(selectedTicket?.theater);
+  }, [selectedTicket]);
 
   const mutation = useMutation({
     mutationFn: deleteTicket,
@@ -111,9 +123,9 @@ function TicketTable() {
       key: "email",
     },
     {
-      title: "Movie Id",
-      key: "movie_id",
-      dataIndex: "movie_id",
+      title: "Movie Title",
+      key: "movieTitle",
+      dataIndex: "movieTitle",
     },
     {
       title: "Date",
@@ -137,7 +149,7 @@ function TicketTable() {
         <Space size="middle">
           <Popconfirm
             title="Delete the ticket"
-            description="Are you sure to delete this task?"
+            description="Are you sure to delete this ticket?"
             onConfirm={() => mutation.mutate(record.id)}
             okText="Yes"
             cancelText="No"
@@ -159,20 +171,14 @@ function TicketTable() {
     },
   ];
 
-  useEffect(() => {
-    setUserId(selectedTicket?.user_id);
-    setName(selectedTicket?.name);
-    setEmail(selectedTicket?.email);
-    console.log("selectedTicket?.movie_id:", selectedTicket?.movie_id);
-    setMovieId(selectedTicket?.movie_id);
-    setDate(selectedTicket?.date);
-    setTime(selectedTicket?.time);
-    setTheater(selectedTicket?.theater);
-  }, [selectedTicket]);
+  
 
   return (
-    <div style={{
-      background: isLightMode ? "white" : "#eceff1" }}>
+    <div
+      style={{
+        background: isLightMode ? "white" : "#eceff1",
+      }}
+    >
       <section style={{ textAlign: "center" }}>
         <h1>Welcome to the Admin Dashboard!</h1>
         <p>Manage your site efficiently!</p>
@@ -192,7 +198,7 @@ function TicketTable() {
           dataSource={data}
           className="edit-table"
         />
-        ;
+        
         <Modal
           title={selectedTicket?.id || ""}
           open={isModalOpen}
@@ -224,15 +230,13 @@ function TicketTable() {
             type="email"
             value={email}
           />
-          <label htmlFor="movieId">Movie Id</label>
+          <label htmlFor="title">Movie Title</label>
           <input
-            onChange={(event) => {
-              setMovieId(event.target.value);
-            }}
-            id="movieId"
+            onChange={(event) => setMovieTitle(event.target.value)}
+            id="title"
             style={{ width: "100%" }}
             type="text"
-            defaultValue={selectedTicket?.movie_id}
+            value={movieTitle}
           />
           <label htmlFor="date">Date</label>
           <input
@@ -258,7 +262,7 @@ function TicketTable() {
           />
         </Modal>
       </div>
-      ;
+     
     </div>
   );
 }

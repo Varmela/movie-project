@@ -30,6 +30,9 @@ function Header() {
     nav("/search/" + splitQuery);
   }
 
+
+  const displaySearch =
+  location.pathname !== "/favorite-movie" && !location.pathname.startsWith("/movie/");
   return (
     <nav
       style={{
@@ -42,18 +45,22 @@ function Header() {
         <img className="image" src={logo} />
         <h3>Cinema + </h3>
       </div>
-      <div style={{ width: "30%" }} className="search">
-        <form className="d-flex">
-          <input
-            className="form-control me-2"
-            type="search"
-            placeholder="Search"
-            aria-label="Search"
-            onChange={(event) => setQuery(event.target.value)}
-          />
-          <button className="button-search" onClick={handleSearch}>Search</button>
-        </form>
-      </div>
+      {displaySearch && (
+        <div style={{ width: "30%" }} className="search">
+          <form className="d-flex">
+            <input
+              className="form-control me-2"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <button className="button-search" onClick={handleSearch}>
+              Search
+            </button>
+          </form>
+        </div>
+      )}
       <div className="links">
         <Switch
           defaultChecked={!context.isLightMode}

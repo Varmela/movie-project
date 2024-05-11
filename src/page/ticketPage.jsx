@@ -1,10 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Modal } from "antd";
+import { Modal, Popconfirm } from "antd";
 import { useState, useEffect } from "react";
 import { FaArrowLeft, FaMapMarker } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { ticketLoader, updateTicket } from "../api";
+import { deleteTicket, ticketLoader, updateTicket } from "../api";
 
 const TicketPage = () => {
   const nav = useNavigate();
@@ -14,29 +14,24 @@ const TicketPage = () => {
     queryFn: ticketLoader,
   });
 
-  // Initialize state variables with default values
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [name, setName] = useState("");
+  const [email,setEmail] = useState('');
+  const [movieTitle,setMovieTitle] = useState('');
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [theater, setTheater] = useState("");
 
-  useEffect(() => {
-    // Update state variables when selectedTicket changes
-    if (selectedTicket) {
-      setName(selectedTicket.name || "");
-      setDate(selectedTicket.date || "");
-      setTime(selectedTicket.time || "");
-      setTheater(selectedTicket.theater || "");
-    }
-  }, [selectedTicket]);
 
+
+
+  
   const updateMutation = useMutation({
     mutationFn: updateTicket,
     onSuccess: () => {
-      alert("Ticket was updated successfully");
       refetch();
+      toast("Ticket was updated successfully");
       setIsModalOpen(false);
     },
     onError: (e) => {
@@ -52,18 +47,50 @@ const TicketPage = () => {
   const handleOk = () => {
     updateMutation.mutate({
       id: selectedTicket.id,
-      ticketToChange: { name, date, time, theater },
+      ticketToChange: {userId, name,email,movieTitle, date, time, theater },
     });
+    refetch();
   };
-
+console.log(updateMutation);
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
+  const deleteMutation = useMutation({
+    mutationFn: deleteTicket,
+    onSuccess: () => {
+      refetch();
+      toast("Ticket is deleted!");
+    },
+    onError: () => {
+      toast("Something went wrong");
+    },
+  });
+
+
+  useEffect(()=>{
+    setName(selectedTicket?.name);
+    setEmail(selectedTicket?.email);
+    setMovieTitle(selectedTicket?.movieTitle);
+    setDate(selectedTicket?.date);
+    setTime(selectedTicket?.time);
+    setTheater(selectedTicket?.theater);
+  },[selectedTicket])
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching ticket data</div>;
 
   const userTickets = data.filter((ticket) => ticket.user_id === userId);
+  if (userTickets.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
+        <p>You have no tickets yet.</p>
+        <Link to="/" className="button">Go to Movie Listings</Link>
+      </div>
+    );
+  }
+  
+console.log(data)
+  
 
   return (
     <>
@@ -74,7 +101,7 @@ const TicketPage = () => {
         >
           <FaArrowLeft className="mr-2" /> Back to Movie Listings
         </Link>
-<h1 style={{textAlign:'center'}}>All your ticket</h1>
+<h1 style={{textAlign:'center'}}>All your ticket 🎫</h1> 
         {userTickets.map((ticket) => (
           <div key={ticket.id} className="ticket">
             <div className="ticket-header">
@@ -87,6 +114,12 @@ const TicketPage = () => {
               </div>
               <div className="ticket-info">
                 <span className="ticket-text">Name: {ticket.name}</span>
+              </div>
+              <div className="ticket-info">
+                <span className="ticket-text">Email: {ticket.email}</span>
+              </div>
+              <div className="ticket-info">
+                <span className="ticket-text">Movie Title: {ticket.movieTitle}</span>
               </div>
               <div className="ticket-info">
                 <span className="ticket-text">Date: {ticket.date}</span>
@@ -104,12 +137,22 @@ const TicketPage = () => {
             >
               Edit
             </button>
+            <Popconfirm
+            title="Delete the ticket"
+            description="Are you sure to delete this ticket?"
+            onConfirm={() => deleteMutation.mutate(ticket.id)}
+            okText="👍"
+            cancelText="No"
+          >
+           <button className="ticket-delete-button"> Delete</button> 
+          </Popconfirm>
+
           </div>
         ))}
       </div>
       <Modal
       title="Edit Ticket"
-      visible={isModalOpen}
+      open={isModalOpen}
       onOk={handleOk}
       onCancel={handleCancel}
       className="custom-modal" 
@@ -121,6 +164,26 @@ const TicketPage = () => {
         id="name"
         className="input-field"
         type="text"
+        defaultValue={selectedTicket?.name}
+      />
+      <label htmlFor="email">Email</label>
+      <input
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        id="email"
+        className="input-field"
+        type="email"
+        defaultValue={selectedTicket?.email}
+        disabled
+      />
+      <label htmlFor="title">Movie Title</label>
+      <input
+        value={movieTitle}
+        onChange={(e) => setMovieTitle.target.value}
+        id="title"
+        className="input-field"
+        type="text"
+        defaultValue={selectedTicket?.movieTitle}
       />
       <label>Date</label>
       <input
@@ -128,6 +191,8 @@ const TicketPage = () => {
         onChange={(e) => setDate(e.target.value)}
         className="input-field"
         type="date"
+        defaultValue={selectedTicket?.date}
+
       />
       <label>Time</label>
       <input
@@ -135,6 +200,7 @@ const TicketPage = () => {
         onChange={(e) => setTime(e.target.value)}
         className="input-field"
         type="time"
+        defaultValue={selectedTicket?.time}
       />
       <label>Theater</label>
       <input
@@ -142,6 +208,8 @@ const TicketPage = () => {
         onChange={(e) => setTheater(e.target.value)}
         className="input-field"
         type="text"
+        defaultValue={selectedTicket?.theater}
+
       />
     </Modal>
     
