@@ -1,15 +1,15 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
-import { postDataProfile } from "../api";
-
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import { postDataProfile } from '../api';
 
 const schema = z.object({
-  name: z.string(),
-  email: z.string().email(),
-  password: z.string().min(6),
+  name: z.string().nonempty({ message: "Name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters long" }),
 });
 
 const Signup = () => {
@@ -18,6 +18,7 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setError,
   } = useForm({
     defaultValues: {
       email: "mela@gmail.com",
@@ -30,11 +31,14 @@ const Signup = () => {
     onSuccess: () => {
       nav('/');
     },
-    onError: (e) => {
-      console.log(e);
-      alert("Your profile was not created");
+    onError: (error) => {
+      console.log(error);
+      if (error.response?.data?.message === 'Email already exists') {
+        setError('email', { type: 'manual', message: 'Email already exists' });
+      } else {
+        alert("Your profile was not created! The email exists");
+      }
     },
-    
   });
 
   const onSubmit = (data) => {
@@ -81,7 +85,7 @@ const Signup = () => {
         <button disabled={isSubmitting} type="submit" className="submit-btn">
           {isSubmitting ? "Sending.." : "Submit"}
         </button>
-        <p>Already have an account?<Link to = '/login'>Login</Link></p>
+        <p>Already have an account? <Link to='/login'>Login</Link></p>
       </form>
     </div>
   );
